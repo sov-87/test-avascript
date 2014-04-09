@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html lang="RU">
+	<head>
+		<title>test</title>
+		<meta charset="utf-8">
+		<style></style>
+		<script type='text/javascript' src='knockout-3.1.0.debug.js'></script>
+	</head>
+	<body>
+		<table>
+			<tbody data-bind="foreach: products">
+				<tr>
+					<td>
+						<table>
+							<tr>
+								<td>Наименование</td>
+								<td data-bind="text: name"></td>
+							</tr>
+							<tr>
+								<td>Цена</td>
+								<td data-bind="text: variant().price"></td>
+							</tr>
+							<tr>
+								<td>Вариант</td>
+								<td><select data-bind="options: variants, value: variant, optionsText: 'name'"></select></td>
+							</tr>
+							<tr>
+								<td>Количество</td>
+								<td><input data-bind="value: quantity" /></td>
+							</tr>
+							<tr>
+								<td>Единица измерения</td>
+								<td><select data-bind="options: measures, value: measure, optionsText: 'name'"></select></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</body>
+	<script type="text/javascript">
+		function Product(product) {
+			var self = this;
+			self.name = product.name;
+			self.quantity = ko.observable(0);
+			self.measure = ko.observable(0);
+			self.variant = ko.observable(0);
+			self.variants = product.variants;
+			self.measures = product.measures;
+		};
+
+		function ProductsViewModel() {
+			var self = this;
+			// Editable data
+			self.products = ko.observableArray([
+				new Product({
+					name: "Tea",
+					measures: [ { id: 1, name: 'Короб', quantity: 10}, { id: 1, name: 'Палетта', quantity: 20} ],
+					variants: [ { id: 1, name: 'Tea 1', price: 100.2}, { id: 1, name: 'Tea 2', price: 2.9} ]
+				}),
+				new Product({
+					name: "Raffaello",
+					measures: [ { id: 1, name: 'Короб', quantity: 100}, { id: 1, name: 'Палетта', quantity: 200} ],
+					variants: [ { id: 1, name: 'Raffaello 1', price: 1000.2}, { id: 1, name: 'Ferrero 2', price: 20.9} ]
+				})
+			]);
+		}
+
+
+		ko.applyBindings(new ProductsViewModel());
+	</script>
+</html>
